@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kid emotions embed example</title>
+<style>
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; gap: 16px; font-family: system-ui, sans-serif; background: #FBF6EE; color: #2A2320; }
+  #kid { width: 320px; height: 320px; }
+  select { font: inherit; min-height: 40px; padding: 0 12px; border-radius: 10px; }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+</head>
+<body>
+<main style="display: grid; justify-items: center; gap: 16px">
+  <div id="kid" role="img" aria-label="Animated kid"></div>
+  <label>Emotion <select id="pick"></select></label>
+</main>
+<script>
+  // Option A: one combined file, jump between named markers.
+  const player = lottie.loadAnimation({
+    container: document.getElementById('kid'),
+    renderer: 'svg',
+    loop: true,
+    autoplay: false,
+    path: '../../dist/kid-emotions-girl.json'
+  });
+
+  function play(name) {
+    const m = player.animationData.markers.find((x) => x.cm === name);
+    if (m) player.playSegments([m.tm, m.tm + m.dr], true);
+    document.getElementById('kid').setAttribute('aria-label', `Kid feeling ${name}`);
+  }
+
+  player.addEventListener('DOMLoaded', () => {
+    const pick = document.getElementById('pick');
+    player.animationData.markers.forEach((m) => pick.add(new Option(m.cm, m.cm)));
+    pick.onchange = () => play(pick.value);
+    play('happy');
+  });
+
+  // Option B: one small file per emotion (dist/emotions/<kid>/<name>.json), just loop it:
+  // lottie.loadAnimation({ container, renderer: 'svg', loop: true, autoplay: true, path: '../../dist/emotions/girl/happy.json' });
+</script>
+</body>
+</html>

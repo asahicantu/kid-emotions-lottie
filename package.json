@@ -1,0 +1,20 @@
+{
+  "name": "kid-emotions-lottie",
+  "version": "1.0.0",
+  "description": "A cartoon kid showing 20 emotions: a code-driven face rig that exports Lottie JSON.",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "node tools/build-lottie.mjs",
+    "build:fast": "node tools/build-lottie.mjs --step 2 --no-split",
+    "validate": "node tools/validate.mjs",
+    "sheet": "node tools/contact-sheet.mjs",
+    "preview": "node tools/serve.mjs",
+    "sync:canvas": "node tools/sync-canvas.mjs",
+    "sync:pull": "node tools/sync-canvas.mjs --pull",
+    "all": "node tools/build-lottie.mjs && node tools/validate.mjs && node tools/contact-sheet.mjs"
+  }
+}

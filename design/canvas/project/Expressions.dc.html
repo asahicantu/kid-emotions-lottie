@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Expression sheet</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@400;600;700;800&amp;display=swap">
+<style>
+body{margin:0;font-family:Nunito,system-ui,sans-serif;background:#FBF6EE;color:#2A2320}
+a{color:#A5482C}a:hover{color:#7C3219}
+</style>
+</helmet>
+<div style="width: 1760px; height: 2320px; box-sizing: border-box; padding: 64px; display: flex; flex-direction: column; gap: 40px; background: #FBF6EE; color: #2A2320; font-family: Nunito, system-ui, sans-serif">
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 40px">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="font-size: 13px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #7A5F47">Expression sheet · 20 segments</div>
+<h1 style="margin: 0; font-family: Fredoka, system-ui, sans-serif; font-size: 56px; font-weight: 600; line-height: 1.05">Every feeling starts in the face</h1>
+</div>
+<p style="margin: 0; max-width: 480px; font-size: 16px; line-height: 1.5; color: #564940">Each card plays its live loop. The beats list what the brows, eyes and mouth do, in the order a viewer reads them, then the extras that support them.</p>
+</div>
+<div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 24px">
+<sc-for list="{{cards}}" as="c" hint-placeholder-count="20">
+<div style="display: flex; flex-direction: column; border-radius: 24px; overflow: hidden; background: #FFFFFF; border: 1px solid #EADFCF">
+<div style="height: 240px; background: {{c.bg}}; display: flex; align-items: center; justify-content: center">
+<div style="width: 220px; height: 220px"><dc-import name="Kid" emotion="{{c.id}}" kid="{{c.kid}}" size="{{s}}" hint-size="220px,220px"></dc-import></div>
+</div>
+<div style="padding: 16px 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px">
+<h2 style="margin: 0; font-family: Fredoka, system-ui, sans-serif; font-size: 24px; font-weight: 600">{{c.label}}</h2>
+<span style="font-size: 12px; font-weight: 700; color: #6E5540; white-space: nowrap">f {{c.frames}} · {{c.loop}}</span>
+</div>
+<ul style="margin: 0; padding-left: 16px; display: flex; flex-direction: column; gap: 5px; font-size: 13px; line-height: 1.4; color: #4A3F37">
+<li><b>Brows</b> {{c.beats.brows}}</li>
+<li><b>Eyes</b> {{c.beats.eyes}}</li>
+<li><b>Mouth</b> {{c.beats.mouth}}</li>
+<li><b>Extras</b> {{c.beats.extras}}</li>
+</ul>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"kid":{"editor":"enum","options":["mixed","girl","boy"],"default":"mixed"},"$preview":{"width":1760,"height":2320}}'>
+/* <emotion-data fields="id,label,bg,frames,loop,beats"> */
+const EMOS = [
+{"id":"happy","label":"Happy","bg":"#FFF1CC","frames":"0–60","loop":"2.0 s","beats":{"brows":"Lift and arch high","eyes":"Lower lids push up into crescents","mouth":"Open grin, teeth and tongue","extras":"Two bounces, sparkles, full blush"}},
+{"id":"sad","label":"Sad","bg":"#E3EEF8","frames":"61–151","loop":"3.0 s","beats":{"brows":"Inner ends pinch upward","eyes":"Outer lids droop, gaze drops, wet shine","mouth":"Small frown, corners quiver","extras":"Tears from both eyes, shoulders slump"}},
+{"id":"angry","label":"Angry","bg":"#FCE1D9","frames":"152–212","loop":"2.0 s","beats":{"brows":"Inner ends slam down","eyes":"Lids tilt inward, pupils shrink","mouth":"Gritted teeth, widens on each huff","extras":"Red flush, vein pop, steam, tremble"}},
+{"id":"scared","label":"Scared","bg":"#ECE7F8","frames":"213–261","loop":"1.6 s","beats":{"brows":"Raised and pinched together","eyes":"Wide open, pupils dart side to side","mouth":"Clenched teeth, corners pulled down","extras":"Shiver, pale tint, sweat drop"}},
+{"id":"surprised","label":"Surprised","bg":"#FFEBD3","frames":"262–338","loop":"2.5 s","beats":{"brows":"Shoot up past the fringe","eyes":"Wide open, pinpoint pupils","mouth":"Round “O”","extras":"Hop with squash and stretch, “!” pop"}},
+{"id":"disgusted","label":"Disgusted","bg":"#EDF4DE","frames":"339–399","loop":"2.0 s","beats":{"brows":"Pulled down, one side lower","eyes":"Squint, one eye more than the other","mouth":"Upper lip sneers up on one side","extras":"Nose scrunch, green tint, stink lines"}},
+{"id":"calm","label":"Calm","bg":"#F5EEE2","frames":"400–490","loop":"3.0 s","beats":{"brows":"Resting, soft arch","eyes":"Relaxed, glance left and right","mouth":"Gentle closed smile","extras":"Slow breathing sway"}},
+{"id":"excited","label":"Excited","bg":"#FFE3EE","frames":"491–531","loop":"1.3 s","beats":{"brows":"Jump high on every bounce","eyes":"Huge pupils, extra sparkle","mouth":"Wide open grin, tongue showing","extras":"Fast double bounce, sparkles, burst lines"}},
+{"id":"tired","label":"Tired","bg":"#E4F1E9","frames":"532–652","loop":"4.0 s","beats":{"brows":"Relaxed, drift down on the yawn","eyes":"Lids sink, snap open on the nod","mouth":"Slack, then one big yawn","extras":"Head nod, Zzz, snot bubble"}},
+{"id":"proud","label":"Proud","bg":"#FBF1D6","frames":"653–743","loop":"3.0 s","beats":{"brows":"Raised, one a little higher","eyes":"Half-lidded and content","mouth":"Closed smirk, one corner up","extras":"Chin up, chest out, glint"}},
+{"id":"embarrassed","label":"Embarrassed","bg":"#FDE4EA","frames":"744–834","loop":"3.0 s","beats":{"brows":"Worried tilt","eyes":"Look away and down","mouth":"Wobbly small smile","extras":"Deep blush with lines, sweat, shrink"}},
+{"id":"confused","label":"Confused","bg":"#EEECFB","frames":"835–925","loop":"3.0 s","beats":{"brows":"One up, one down","eyes":"Glance up and aside, one eye narrower","mouth":"Twisted to one side","extras":"Head tilt, bobbing “?”"}},
+{"id":"jealous","label":"Jealous","bg":"#E2F2E4","frames":"926–1016","loop":"3.0 s","beats":{"brows":"Low and tight","eyes":"Side-eye under heavy lids","mouth":"Pout pushed to one side","extras":"Green tint, grumble scribble"}},
+{"id":"grateful","label":"Grateful","bg":"#FCEDE0","frames":"1017–1107","loop":"3.0 s","beats":{"brows":"Soft and raised","eyes":"Closed, smiling arcs","mouth":"Warm closed smile","extras":"Slow bow, blush, floating hearts"}},
+{"id":"lonely","label":"Lonely","bg":"#E7EAF0","frames":"1108–1228","loop":"4.0 s","beats":{"brows":"Inner ends lift","eyes":"Heavy lids, gaze down, wet shine","mouth":"Flat, corners down","extras":"Slump, pale tint, rain cloud"}},
+{"id":"hopeful","label":"Hopeful","bg":"#E2F4F6","frames":"1229–1319","loop":"3.0 s","beats":{"brows":"Lifted, inner ends up","eyes":"Look up, big shiny pupils","mouth":"Small open smile","extras":"Head tilts up, twinkling star"}},
+{"id":"nervous","label":"Nervous","bg":"#F4EFDF","frames":"1320–1380","loop":"2.0 s","beats":{"brows":"Worried and raised","eyes":"Small pupils, quick blinks, darting","mouth":"Wavy clench","extras":"Jitter, pale tint, sweat drop"}},
+{"id":"bored","label":"Bored","bg":"#EEEBE7","frames":"1381–1501","loop":"4.0 s","beats":{"brows":"Flat and low","eyes":"Half-closed, gaze drifts up","mouth":"Pushed to one side, then a sigh","extras":"Head leans heavy, sigh puff"}},
+{"id":"curious","label":"Curious","bg":"#DFF3EE","frames":"1502–1592","loop":"3.0 s","beats":{"brows":"One brow lifts","eyes":"Wide, big pupils, look aside","mouth":"Small “o”","extras":"Head tilts and leans in, twinkle"}},
+{"id":"loving","label":"Loving","bg":"#FDE1E8","frames":"1593–1683","loop":"3.0 s","beats":{"brows":"Soft and raised","eyes":"Heart eyes that pulse","mouth":"Big warm smile","extras":"Sway, full blush, floating hearts"}}
+];
+/* </emotion-data> */
+
+class Component extends DCLogic {
+  renderVals() {
+    const mode = this.props.kid ?? 'mixed';
+    return {
+      s: 220,
+      cards: EMOS.map((e, i) => Object.assign({}, e, { kid: mode === 'mixed' ? (i % 2 ? 'boy' : 'girl') : mode }))
+    };
+  }
+}
+</script>
+</body>
+</html>

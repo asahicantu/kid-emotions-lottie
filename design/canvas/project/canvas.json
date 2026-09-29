@@ -1,0 +1,16 @@
+{
+  "v": 3,
+  "createdOnFiles": { "v": 1, "at": "2026-09-29T12:00:00Z" },
+  "title": "Kid Emotions Lottie",
+  "launch": { "view": "canvas" },
+  "pages": [],
+  "boards": {
+    "Main.dc.html": { "x": 0, "y": 0, "w": 1440, "h": 800, "title": "Prototype player", "is_interactive": true },
+    "Kid.dc.html": { "x": 1520, "y": 0, "w": 420, "h": 420, "title": "Kid rig (component)" },
+    "Expressions.dc.html": { "x": 0, "y": 920, "w": 1760, "h": 2320, "title": "Expression sheet" },
+    "Spec.dc.html": { "x": 1840, "y": 920, "w": 1440, "h": 1320, "title": "Lottie build spec" }
+  },
+  "order": ["Main.dc.html", "Kid.dc.html", "Expressions.dc.html", "Spec.dc.html"],
+  "notes": {},
+  "designSystems": []
+}

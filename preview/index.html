@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kid Emotions preview</title>
+<style>
+  :root { --ink: #2A2320; --muted: #6E5540; --line: #E6DCCB; --paper: #FBF6EE; --card: #FFFFFF; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background: var(--paper); color: var(--ink); }
+  header { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid var(--line); }
+  h1 { margin: 0; font-size: 22px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  button, select, label.file { font: inherit; font-size: 14px; font-weight: 600; min-height: 40px; padding: 0 14px; border-radius: 10px; border: 2px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; }
+  button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+  button:focus-visible, select:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+  label.file { display: inline-flex; align-items: center; }
+  label.file input { display: none; }
+  main { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; padding: 24px; max-width: 1200px; margin: 0 auto; }
+  .stage { background: var(--card); border: 1px solid var(--line); border-radius: 24px; overflow: hidden; }
+  .stage h2 { margin: 0; padding: 14px 18px; font-size: 14px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; gap: 8px; }
+  .stage h2 span { color: var(--muted); font-weight: 500; }
+  .art { aspect-ratio: 1; transition: background-color 300ms; }
+  .art svg { display: block; width: 100%; height: 100%; }
+  #emotions { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; padding: 0 24px 32px; max-width: 1200px; margin: 0 auto; }
+  #emotions button { display: flex; align-items: center; gap: 8px; justify-content: flex-start; }
+  #emotions i { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  #status { padding: 0 24px 16px; max-width: 1200px; margin: 0 auto; color: var(--muted); font-size: 14px; }
+  @media (max-width: 700px) { main { grid-template-columns: 1fr; padding: 16px; } #emotions { padding: 0 16px 24px; } }
+</style>
+<script src="../src/rig/rig.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+</head>
+<body>
+<header>
+  <h1>Kid emotions: rig vs. Lottie</h1>
+  <div class="controls">
+    <button type="button" data-kid="girl" aria-pressed="true">Girl</button>
+    <button type="button" data-kid="boy" aria-pressed="false">Boy</button>
+    <select id="speed" aria-label="Speed">
+      <option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option>
+    </select>
+    <button type="button" id="play" aria-pressed="false">Pause</button>
+    <label class="file">Open .json<input type="file" id="file" accept=".json,application/json"></label>
+  </div>
+</header>
+<main>
+  <section class="stage">
+    <h2>Rig (live, src/rig/rig.js) <span>blends between emotions</span></h2>
+    <div class="art" id="rig"></div>
+  </section>
+  <section class="stage">
+    <h2>Lottie: <b id="lottieName">dist/kid-emotions-girl.json</b> <span id="lottieInfo"></span></h2>
+    <div class="art" id="lottie"></div>
+  </section>
+</main>
+<p id="status"></p>
+<nav id="emotions" aria-label="Emotions"></nav>
+<script>
+  const state = { emotion: 'happy', kid: 'girl', speed: 1, playing: true, custom: false };
+  const anim = new KidRig.Animator();
+  const rigEl = document.getElementById('rig');
+  const lottieEl = document.getElementById('lottie');
+  const statusEl = document.getElementById('status');
+  let player = null, markers = {};
+
+  // emotion buttons
+  const nav = document.getElementById('emotions');
+  KidRig.EMOTIONS.forEach((e) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.dataset.emotion = e.id;
+    b.innerHTML = `<i style="background:${e.ring}"></i>${e.label}`;
+    b.onclick = () => select(e.id);
+    nav.appendChild(b);
+  });
+
+  function select(id) {
+    state.emotion = id;
+    anim.set(id, state.playing);
+    const e = KidRig.byId(id);
+    document.querySelectorAll('[data-emotion]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.emotion === id)));
+    rigEl.style.background = lottieEl.style.background = e.bg;
+    playMarker();
+  }
+
+  function playMarker() {
+    if (!player) return;
+    const m = markers[state.emotion];
+    const seg = KidRig.timeline().find((s) => s.id === state.emotion);
+    if (m) {
+      player.playSegments([m.tm, m.tm + m.dr], true);
+      statusEl.textContent = `Marker "${state.emotion}": frames ${m.tm}–${m.tm + m.dr} (${(m.dr / 30).toFixed(1)} s loop). Rig loop ${seg.L} frames.`;
+    } else {
+      player.goToAndPlay(0, true);
+      statusEl.textContent = `This file has no "${state.emotion}" marker; playing it from the start.`;
+    }
+    if (!state.playing) player.pause();
+  }
+
+  function loadLottie(data, name) {
+    if (player) player.destroy();
+    markers = {};
+    (data.markers || []).forEach((m) => { markers[m.cm] = m; });
+    document.getElementById('lottieName').textContent = name;
+    document.getElementById('lottieInfo').textContent = `${data.op - data.ip} frames · ${(data.markers || []).length} markers`;
+    player = lottie.loadAnimation({ container: lottieEl, renderer: 'svg', loop: true, autoplay: false, animationData: data });
+    player.setSpeed(state.speed);
+    player.addEventListener('DOMLoaded', playMarker);
+  }
+
+  async function loadKid() {
+    const path = `../dist/kid-emotions-${state.kid}.json`;
+    try {
+      const res = await fetch(path);
+      if (!res.ok) throw new Error(res.status + ' ' + res.statusText);
+      loadLottie(await res.json(), path.replace('../', ''));
+    } catch (err) {
+      lottieEl.innerHTML = '';
+      statusEl.textContent = `Could not load ${path} (${err.message}). Run "npm run build" first.`;
+    }
+  }
+
+  document.querySelectorAll('[data-kid]').forEach((b) => b.onclick = () => {
+    state.kid = b.dataset.kid;
+    document.querySelectorAll('[data-kid]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    loadKid();
+  });
+  document.getElementById('speed').onchange = (ev) => { state.speed = Number(ev.target.value); if (player) player.setSpeed(state.speed); };
+  document.getElementById('play').onclick = (ev) => {
+    state.playing = !state.playing;
+    ev.target.textContent = state.playing ? 'Pause' : 'Play';
+    ev.target.setAttribute('aria-pressed', String(!state.playing));
+    if (player) state.playing ? player.play() : player.pause();
+  };
+  document.getElementById('file').onchange = async (ev) => {
+    const f = ev.target.files[0];
+    if (f) loadLottie(JSON.parse(await f.text()), f.name);
+  };
+
+  // rig render loop
+  let last = performance.now();
+  function frame(now) {
+    const dt = Math.min(100, now - last); last = now;
+    if (state.playing) anim.advance(dt / 1000 * KidRig.FPS * state.speed);
+    rigEl.innerHTML = KidRig.toSVG(KidRig.scene(anim.pose(), { kid: state.kid }));
+    requestAnimationFrame(frame);
+  }
+
+  select(state.emotion);
+  loadKid();
+  requestAnimationFrame(frame);
+</script>
+</body>
+</html>

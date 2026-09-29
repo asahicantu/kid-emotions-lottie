@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lottie build spec</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@400;600;700;800&amp;display=swap">
+<style>
+body{margin:0;font-family:Nunito,system-ui,sans-serif;background:#FBF6EE;color:#2A2320}
+a{color:#A5482C}a:hover{color:#7C3219}
+</style>
+</helmet>
+<div style="width: 1440px; height: 1320px; box-sizing: border-box; padding: 64px; display: flex; flex-direction: column; gap: 40px; background: #FBF6EE; color: #2A2320; font-family: Nunito, system-ui, sans-serif">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="font-size: 13px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #7A5F47">Handoff · kid-emotions-lottie repository</div>
+<h1 style="margin: 0; font-family: Fredoka, system-ui, sans-serif; font-size: 56px; font-weight: 600; line-height: 1.05">Lottie build spec</h1>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; flex-grow: 1">
+<div style="display: flex; flex-direction: column; gap: 20px">
+<div style="height: 340px; border-radius: 28px; background: #F5EEE2; display: flex; align-items: center; justify-content: center">
+<div style="width: 320px; height: 320px"><dc-import name="Kid" emotion="calm" kid="{{kid}}" size="{{s}}" hint-size="320px,320px"></dc-import></div>
+</div>
+<h2 style="margin: 0; font-family: Fredoka, system-ui, sans-serif; font-size: 24px; font-weight: 600">Composition</h2>
+<div style="display: flex; flex-direction: column; font-size: 15px">
+<div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #E6DCCB"><span style="color: #6E5540">Canvas</span><b>400 × 400 px</b></div>
+<div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #E6DCCB"><span style="color: #6E5540">Frame rate</span><b>30 fps</b></div>
+<div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #E6DCCB"><span style="color: #6E5540">Combined file</span><b>1683 f · 20 markers</b></div>
+<div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #E6DCCB"><span style="color: #6E5540">Per-emotion files</span><b>40 × ~55 KB</b></div>
+<div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #E6DCCB"><span style="color: #6E5540">Layers</span><b>Shape layers only</b></div>
+<div style="display: flex; justify-content: space-between; padding: 10px 0"><span style="color: #6E5540">Rebuild</span><b>npm run build</b></div>
+</div>
+<h2 style="margin: 8px 0 0; font-family: Fredoka, system-ui, sans-serif; font-size: 24px; font-weight: 600">Pipeline</h2>
+<ol style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 1.5; color: #4A3F37">
+<li><b>Pose:</b> each emotion sets ~50 face channels per frame.</li>
+<li><b>Scene:</b> channels become named groups and bezier paths.</li>
+<li><b>Output:</b> the same scene renders as SVG (canvas, preview) or is baked into Lottie keyframes.</li>
+</ol>
+</div>
+<div style="display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-family: Fredoka, system-ui, sans-serif; font-size: 24px; font-weight: 600">Layer stack, top to bottom</h2>
+<div style="display: flex; flex-direction: column; font-size: 14px; border-radius: 20px; overflow: hidden; border: 1px solid #E6DCCB; background: #FFFFFF">
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 10px 16px; border-bottom: 1px solid #F0E8DC"><b>fx* (17 effect groups)</b><span style="color: #6E5540">opacity · position · scale</span></div>
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 10px 16px; border-bottom: 1px solid #F0E8DC"><b>browL / browR</b><span style="color: #6E5540">path</span></div>
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 10px 16px; border-bottom: 1px solid #F0E8DC"><b>girlFront · boyFront ▸ cowlickG</b><span style="color: #6E5540">rotation</span></div>
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 10px 16px; border-bottom: 1px solid #F0E8DC; background: #FFF7E8"><b>eyeL / eyeR ▸ upLid, lowLid, lines</b><span style="color: #6E5540">path · skin colour</span></div>
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 10px 16px 10px 32px; border-bottom: 1px solid #F0E8DC; background: #FFF7E8"><b>heart · look ▸ pupil, shine, iris</b><span style="color: #6E5540">position · scale · opacity</span></div>
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 10px 16px 10px 32px; border-bottom: 1px solid #F0E8DC; background: #FFF7E8"><b>outline · lash · closed · sclera</b><span style="color: #6E5540">opacity</span></div>
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 10px 16px; border-bottom: 1px solid #F0E8DC; background: #FFF7E8"><b>mouth ▸ lips, grit, teeth, tongue, cavity</b><span style="color: #6E5540">path (2 vertices)</span></div>
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 10px 16px; border-bottom: 1px solid #F0E8DC; background: #FFF7E8"><b>nose · wrinkleG</b><span style="color: #6E5540">path · opacity</span></div>
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 10px 16px; border-bottom: 1px solid #F0E8DC"><b>cheeksG · blushLinesG</b><span style="color: #6E5540">opacity</span></div>
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 10px 16px; border-bottom: 1px solid #F0E8DC"><b>face · ears</b><span style="color: #6E5540">skin colour (tints)</span></div>
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 10px 16px; border-bottom: 1px solid #F0E8DC"><b>girlBack ▸ pigL, pigR · boyBack</b><span style="color: #6E5540">rotation, lags head</span></div>
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 10px 16px; border-bottom: 1px solid #F0E8DC"><b>Head layer (anchor at chin)</b><span style="color: #6E5540">position · rotation · scale</span></div>
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 10px 16px"><b>Body layer ▸ collar, shirt, neck</b><span style="color: #6E5540">position · breath</span></div>
+</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.5; color: #6E5540">Shaded rows are the face rig, where most keyframes live. Names match the groups in the exported JSON, so they can be targeted with dynamic properties.</p>
+<h2 style="margin: 8px 0 0; font-family: Fredoka, system-ui, sans-serif; font-size: 24px; font-weight: 600">Build rules</h2>
+<ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; line-height: 1.5; color: #4A3F37">
+<li>Every mouth pose is the same 2-vertex closed path; lids are always 5 vertices. Fixed counts are what let Lottie morph them.</li>
+<li>Lids are animated paths, not masks, so they stay cheap on iOS and Android.</li>
+<li>Every oscillation completes whole cycles per segment, so each loop is seamless.</li>
+<li>No expressions, effects, images or text layers: plays in lottie-web, lottie-ios and lottie-android.</li>
+<li>Switching segments inside a Lottie player is a cut; the 9-frame blend exists only in the live rig.</li>
+</ul>
+</div>
+<div style="display: flex; flex-direction: column; gap: 16px">
+<h2 style="margin: 0; font-family: Fredoka, system-ui, sans-serif; font-size: 24px; font-weight: 600">Markers</h2>
+<div style="display: flex; flex-direction: column; font-size: 14px; border-radius: 20px; overflow: hidden; border: 1px solid #E6DCCB; background: #FFFFFF">
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; padding: 10px 16px; border-bottom: 1px solid #E6DCCB; font-weight: 800; color: #6E5540; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em"><span>Name</span><span>Frames</span><span>Loop</span></div>
+<sc-for list="{{rows}}" as="m" hint-placeholder-count="20">
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; padding: 7px 16px; border-bottom: 1px solid #F0E8DC"><b>{{m.id}}</b><span>{{m.frames}}</span><span>{{m.loop}}</span></div>
+</sc-for>
+</div>
+<p style="margin: 0; font-size: 13px; line-height: 1.5; color: #6E5540">Play one with <b>playSegments([start, end], true)</b>. A 1-frame gap sits between segments, so a loop's last frame equals its first.</p>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"kid":{"editor":"enum","options":["girl","boy"],"default":"boy"},"$preview":{"width":1440,"height":1320}}'>
+/* <emotion-data fields="id,frames,loop"> */
+const EMOS = [
+{"id":"happy","frames":"0–60","loop":"2.0 s"},
+{"id":"sad","frames":"61–151","loop":"3.0 s"},
+{"id":"angry","frames":"152–212","loop":"2.0 s"},
+{"id":"scared","frames":"213–261","loop":"1.6 s"},
+{"id":"surprised","frames":"262–338","loop":"2.5 s"},
+{"id":"disgusted","frames":"339–399","loop":"2.0 s"},
+{"id":"calm","frames":"400–490","loop":"3.0 s"},
+{"id":"excited","frames":"491–531","loop":"1.3 s"},
+{"id":"tired","frames":"532–652","loop":"4.0 s"},
+{"id":"proud","frames":"653–743","loop":"3.0 s"},
+{"id":"embarrassed","frames":"744–834","loop":"3.0 s"},
+{"id":"confused","frames":"835–925","loop":"3.0 s"},
+{"id":"jealous","frames":"926–1016","loop":"3.0 s"},
+{"id":"grateful","frames":"1017–1107","loop":"3.0 s"},
+{"id":"lonely","frames":"1108–1228","loop":"4.0 s"},
+{"id":"hopeful","frames":"1229–1319","loop":"3.0 s"},
+{"id":"nervous","frames":"1320–1380","loop":"2.0 s"},
+{"id":"bored","frames":"1381–1501","loop":"4.0 s"},
+{"id":"curious","frames":"1502–1592","loop":"3.0 s"},
+{"id":"loving","frames":"1593–1683","loop":"3.0 s"}
+];
+/* </emotion-data> */
+
+class Component extends DCLogic {
+  renderVals() {
+    return { kid: this.props.kid ?? 'boy', s: 320, rows: EMOS };
+  }
+}
+</script>
+</body>
+</html>

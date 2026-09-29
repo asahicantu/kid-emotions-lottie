@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Nico emotion player</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&amp;family=Nunito:wght@400;600;700;800&amp;display=swap">
+<style>
+body{margin:0;font-family:Nunito,system-ui,sans-serif;background:#FBF6EE;color:#2A2320}
+a{color:#A5482C}a:hover{color:#7C3219}
+button{font-family:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid #2A2320;outline-offset:2px}
+</style>
+</helmet>
+<div style="width: 1440px; height: 800px; box-sizing: border-box; padding: 48px; display: flex; gap: 48px; background: #FBF6EE; color: #2A2320; font-family: Nunito, system-ui, sans-serif">
+<div style="width: 704px; height: 704px; flex-shrink: 0; position: relative; border-radius: 36px; overflow: hidden; background: {{cur.bg}}; transition: background-color 400ms ease">
+<div style="position: absolute; left: 82px; top: 90px; width: 540px; height: 540px; border-radius: 50%; background: {{cur.ring}}; transition: background-color 400ms ease"></div>
+<div style="position: absolute; left: 52px; top: 30px; width: 600px; height: 600px">
+<dc-import name="Kid" emotion="{{emotion}}" kid="{{kid}}" playing="{{playing}}" speed="{{speed}}" size="{{kidSize}}" hint-size="600px,600px"></dc-import>
+</div>
+<div style="position: absolute; left: 24px; top: 24px; display: flex; gap: 8px; align-items: center; padding: 8px 16px; border-radius: 999px; background: #FFFFFF; font-size: 14px; font-weight: 700">
+<span style="color: #6E5540">Marker</span>
+<span>{{cur.id}}</span>
+</div>
+<div style="position: absolute; left: 24px; right: 24px; bottom: 24px; display: flex; justify-content: space-between; padding: 12px 20px; border-radius: 16px; background: #FFFFFF; font-size: 14px; font-weight: 600">
+<span>Frames {{cur.frames}}</span>
+<span>Loop {{cur.loop}}</span>
+<span>Blend in 9 f</span>
+</div>
+</div>
+<div style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 26px">
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="font-size: 13px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #7A5F47">Lottie prototype · 30 fps · 400 × 400 · 20 segments</div>
+<h1 style="margin: 0; font-family: Fredoka, system-ui, sans-serif; font-size: 52px; font-weight: 600; line-height: 1.05">How Nico feels</h1>
+<p style="margin: 0; font-size: 16px; line-height: 1.5; color: #564940">Twenty looping segments in one Lottie file. The face carries each feeling; the body only follows the head. Switching blends from the current pose.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #7A5F47">Character</div>
+<div style="display: flex; gap: 8px">
+<sc-for list="{{kids}}" as="k" hint-placeholder-count="2">
+<button type="button" aria-pressed="{{k.pressed}}" onClick="{{k.pick}}" style="flex-grow: 1; height: 44px; border-radius: 12px; border: 2px solid {{k.bd}}; background: {{k.bg}}; color: {{k.fg}}; font-size: 16px; font-weight: 700">{{k.label}}</button>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #7A5F47">Emotion</div>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+<sc-for list="{{emos}}" as="e" hint-placeholder-count="20">
+<button type="button" aria-pressed="{{e.pressed}}" onClick="{{e.pick}}" style="height: 44px; display: flex; align-items: center; gap: 8px; padding: 0 12px; border-radius: 12px; border: 2px solid {{e.bd}}; background: {{e.bg}}; color: {{e.fg}}; text-align: left; font-size: 15px; font-weight: 700; min-width: 0">
+<span style="width: 12px; height: 12px; flex-shrink: 0; border-radius: 50%; background: {{e.ring}}; border: 2px solid #FFFFFF"></span>
+<span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{e.label}}</span>
+</button>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #7A5F47">Playback</div>
+<div style="display: flex; gap: 8px">
+<button type="button" onClick="{{togglePlay}}" aria-label="{{playLabel}}" style="width: 52px; height: 44px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 12px; border: 2px solid #2A2320; background: #2A2320; color: #FFFFFF">
+<sc-if value="{{playing}}" hint-placeholder-val="{{ true }}">
+<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M 5,3 L 5,15 M 13,3 L 13,15" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"></path></svg>
+</sc-if>
+<sc-if value="{{paused}}" hint-placeholder-val="{{ false }}">
+<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M 5,3 L 15,9 L 5,15 Z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"></path></svg>
+</sc-if>
+</button>
+<sc-for list="{{speeds}}" as="s" hint-placeholder-count="3">
+<button type="button" aria-pressed="{{s.pressed}}" onClick="{{s.pick}}" style="flex-grow: 1; height: 44px; border-radius: 12px; border: 2px solid {{s.bd}}; background: {{s.bg}}; color: {{s.fg}}; font-size: 15px; font-weight: 700">{{s.label}}</button>
+</sc-for>
+</div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":800}}'>
+/* <emotion-data fields="id,label,ring,bg,frames,loop"> */
+const EMOS = [
+{"id":"happy","label":"Happy","ring":"#FFD36E","bg":"#FFF1CC","frames":"0–60","loop":"2.0 s"},
+{"id":"sad","label":"Sad","ring":"#A9CBEA","bg":"#E3EEF8","frames":"61–151","loop":"3.0 s"},
+{"id":"angry","label":"Angry","ring":"#F59A84","bg":"#FCE1D9","frames":"152–212","loop":"2.0 s"},
+{"id":"scared","label":"Scared","ring":"#C3B5E8","bg":"#ECE7F8","frames":"213–261","loop":"1.6 s"},
+{"id":"surprised","label":"Surprised","ring":"#FFBE7A","bg":"#FFEBD3","frames":"262–338","loop":"2.5 s"},
+{"id":"disgusted","label":"Disgusted","ring":"#B9D38A","bg":"#EDF4DE","frames":"339–399","loop":"2.0 s"},
+{"id":"calm","label":"Calm","ring":"#EADCC4","bg":"#F5EEE2","frames":"400–490","loop":"3.0 s"},
+{"id":"excited","label":"Excited","ring":"#FF9FC0","bg":"#FFE3EE","frames":"491–531","loop":"1.3 s"},
+{"id":"tired","label":"Tired","ring":"#B4D6C3","bg":"#E4F1E9","frames":"532–652","loop":"4.0 s"},
+{"id":"proud","label":"Proud","ring":"#E9C46A","bg":"#FBF1D6","frames":"653–743","loop":"3.0 s"},
+{"id":"embarrassed","label":"Embarrassed","ring":"#F7A8B8","bg":"#FDE4EA","frames":"744–834","loop":"3.0 s"},
+{"id":"confused","label":"Confused","ring":"#C9C3F0","bg":"#EEECFB","frames":"835–925","loop":"3.0 s"},
+{"id":"jealous","label":"Jealous","ring":"#9FD1A7","bg":"#E2F2E4","frames":"926–1016","loop":"3.0 s"},
+{"id":"grateful","label":"Grateful","ring":"#F2C5A0","bg":"#FCEDE0","frames":"1017–1107","loop":"3.0 s"},
+{"id":"lonely","label":"Lonely","ring":"#AEB8CC","bg":"#E7EAF0","frames":"1108–1228","loop":"4.0 s"},
+{"id":"hopeful","label":"Hopeful","ring":"#9ED8E0","bg":"#E2F4F6","frames":"1229–1319","loop":"3.0 s"},
+{"id":"nervous","label":"Nervous","ring":"#D8C99B","bg":"#F4EFDF","frames":"1320–1380","loop":"2.0 s"},
+{"id":"bored","label":"Bored","ring":"#C7C0B6","bg":"#EEEBE7","frames":"1381–1501","loop":"4.0 s"},
+{"id":"curious","label":"Curious","ring":"#8FD0C0","bg":"#DFF3EE","frames":"1502–1592","loop":"3.0 s"},
+{"id":"loving","label":"Loving","ring":"#F48FA8","bg":"#FDE1E8","frames":"1593–1683","loop":"3.0 s"}
+];
+/* </emotion-data> */
+const ON = { bg: '#2A2320', fg: '#FFFFFF', bd: '#2A2320', pressed: 'true' };
+const OFF = { bg: '#FFFFFF', fg: '#2A2320', bd: '#E6DCCB', pressed: 'false' };
+
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const emotion = st.emotion ?? 'happy';
+    const kid = st.kid ?? 'girl';
+    const playing = st.playing ?? true;
+    const speed = st.speed ?? 1;
+    return {
+      emotion: emotion, kid: kid, playing: playing, paused: !playing, speed: speed, kidSize: 600,
+      cur: EMOS.find((e) => e.id === emotion) || EMOS[0],
+      playLabel: playing ? 'Pause' : 'Play',
+      togglePlay: () => this.setState({ playing: !playing }),
+      emos: EMOS.map((e) => Object.assign({}, e, e.id === emotion ? ON : OFF, { pick: () => this.setState({ emotion: e.id }) })),
+      kids: [{ id: 'girl', label: 'Girl' }, { id: 'boy', label: 'Boy' }].map((k) => Object.assign({}, k, k.id === kid ? ON : OFF, { pick: () => this.setState({ kid: k.id }) })),
+      speeds: [0.5, 1, 2].map((v) => Object.assign({ label: v + '×' }, v === speed ? ON : OFF, { pick: () => this.setState({ speed: v }) }))
+    };
+  }
+}
+</script>
+</body>
+</html>

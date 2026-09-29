@@ -1,0 +1,5 @@
+node_modules/
+.DS_Store
+Thumbs.db
+# custom builds; the default dist/ output is committed so the JSON is usable without building
+dist/custom/
