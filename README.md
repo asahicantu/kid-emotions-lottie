@@ -38,6 +38,31 @@ This starts a local server. Open **http://localhost:5173/preview/** to compare t
 
 ---
 
+## Feelings Friends (kids app)
+
+`app/` is a single-page web app for children, built on the files in `dist/`. Run `npm run app` and open **http://localhost:5173/app/**.
+
+- The home screen shows all 20 feelings as big stickers, each with its emoji, name and colour. The colours are the `ring` and `bg` values from `rig.js`.
+- Tap a sticker and the screen fills with that feeling's colour. The kid acts out the feeling (the per-emotion Lottie file), a voice says the feeling's name, then a cartoon sound plays: a giggle for happy, a sad trombone for sad, a growl for angry, a slide whistle for surprised…
+- On the feeling screen, **Say it again** repeats the name and sound, **Read to me** reads the description and a small "Try it" activity aloud, and ◀ ▶ move to the previous or next feeling.
+- Choose the girl or the boy at the top of the home screen. The sound button mutes everything. Both choices are remembered.
+- **Languages:** English, Español and Norsk bokmål. Pick one on the home screen, or use the 🌍 button on a feeling to switch and hear it in the next language. All the words on screen and the spoken voice change. On the first visit, the app picks the browser's language if it's one of the three. Spanish names follow the chosen kid (*Enojado* for the boy, *Enojada* for the girl).
+- **Record my voice:** on any feeling, tap 🎙️ **Record my voice**, say the feeling's name, then tap **Stop** (recording stops by itself after 6 seconds). The recording plays back straight away. From then on it plays instead of the computer voice, followed by the cartoon sound. Stickers with a recording show a small 🎙️. Use 🗑️ to delete one. Each language has its own recordings, so a child can record "Happy", "Feliz" and "Glad".
+- Recordings are saved in the browser's local database (IndexedDB, database `feelings-friends`). They never leave the device and stay there until deleted. Clearing the site's data in the browser also removes them. Recording needs microphone permission, and a secure page: `localhost` or HTTPS.
+- If the device has no speech voice for the chosen language, the feeling screen says so and suggests recording your own voice.
+- Keyboard: Esc goes back to all feelings, ← → change the feeling. Each feeling has its own link (`#/happy`), so the browser back button works too.
+
+| File | What it does |
+|---|---|
+| `app/feelings.js` | Languages, interface words and the words for each feeling (emoji, spoken name, description, "Try it" line) in English, Spanish and Norwegian bokmål |
+| `app/voices.js` | Saves, loads and deletes the child's recordings in IndexedDB |
+| `app/sounds.js` | One cartoon sound per feeling, made with the Web Audio API (no audio files) |
+| `app/app.js` | Stickers, the feeling screen, the Lottie player, text to speech, routing |
+
+The voice is the browser's built-in speech (Web Speech API), so how it sounds depends on the device. If it has no speech voices, the cartoon sound still plays. If reduced motion is turned on, each feeling shows its still poster frame and the colour wipe is replaced by a cut.
+
+---
+
 ## What is in `dist/`
 
 | File | What it is | Size |

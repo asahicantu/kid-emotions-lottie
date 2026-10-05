@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Feelings Friends</title>
+<meta name="description" content="Tap a feeling to see a cartoon kid show it, hear its name and a silly sound.">
+<meta name="theme-color" content="#CFE6FB">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>😄</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Baloo+2:wght@600;800&display=swap">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js" defer></script>
+<script src="../src/rig/rig.js" defer></script>
+<script src="feelings.js" defer></script>
+<script src="sounds.js" defer></script>
+<script src="voices.js" defer></script>
+<script src="app.js" defer></script>
+</head>
+<body>
+
+<main id="home" class="home">
+  <header class="top">
+    <div class="intro">
+      <h1 data-t="title">How do you feel today?</h1>
+      <p data-t="hint">Tap a feeling to meet it.</p>
+    </div>
+    <div class="controls">
+      <div class="switch kid-switch" role="radiogroup" data-t-label="friend" aria-label="Choose a friend">
+        <button type="button" role="radio" data-kid="girl" aria-checked="true"><span aria-hidden="true">👧</span> <span data-t="girl">Girl</span></button>
+        <button type="button" role="radio" data-kid="boy" aria-checked="false"><span aria-hidden="true">👦</span> <span data-t="boy">Boy</span></button>
+      </div>
+      <div class="switch lang-switch" role="radiogroup" data-t-label="language" aria-label="Language" id="lang-switch"></div>
+      <button type="button" class="round sound-toggle" aria-pressed="true" aria-label="Sound on"><span aria-hidden="true">🔊</span></button>
+    </div>
+  </header>
+
+  <ul class="stickers" id="stickers"></ul>
+
+  <button type="button" class="surprise" id="surprise"><span aria-hidden="true">🎲</span> <span data-t="surprise">Surprise me</span></button>
+</main>
+
+<section id="stage" class="stage" aria-labelledby="feel-name" hidden>
+  <div class="stage-bar">
+    <button type="button" class="pill" id="back"><span aria-hidden="true">←</span> <span data-t="back">All feelings</span></button>
+    <div class="stage-bar-end">
+      <button type="button" class="pill lang-cycle" id="lang-cycle"><span aria-hidden="true">🌍</span> <span id="lang-short">EN</span></button>
+      <button type="button" class="round sound-toggle" aria-pressed="true" aria-label="Sound on"><span aria-hidden="true">🔊</span></button>
+    </div>
+  </div>
+
+  <div class="stage-body">
+    <div class="kid-wrap">
+      <div class="halo" aria-hidden="true"></div>
+      <div class="kid" id="kid" role="img" aria-label=""></div>
+      <span class="badge" id="badge" aria-hidden="true"></span>
+      <p class="kid-error" id="kid-error" data-t-html="missing" hidden>The animation is missing. Run <code>npm run build</code>, then reload.</p>
+    </div>
+
+    <div class="words">
+      <h2 class="feel-name" id="feel-name"></h2>
+      <p class="feel-text" id="feel-text"></p>
+      <p class="try-it"><strong data-t="tryIt">Try it:</strong> <span id="feel-try"></span></p>
+      <p class="note" id="note" role="status" hidden></p>
+    </div>
+  </div>
+
+  <nav class="stage-nav" aria-label="Feeling controls">
+    <button type="button" class="round big" id="prev" data-t-label="prev" aria-label="Previous feeling"><span aria-hidden="true">◀</span></button>
+    <button type="button" class="pill main" id="again"><span aria-hidden="true">🔊</span> <span data-t="again">Say it again</span></button>
+    <span class="extras">
+    <button type="button" class="pill" id="read"><span aria-hidden="true">📖</span> <span data-t="read">Read to me</span></button>
+    <span class="rec-group">
+      <button type="button" class="pill rec" id="rec" aria-pressed="false"><span class="rec-icon" aria-hidden="true">🎙️</span> <span id="rec-text">Record my voice</span></button>
+      <button type="button" class="round" id="rec-delete" data-t-label="remove" aria-label="Delete my voice" hidden><span aria-hidden="true">🗑️</span></button>
+    </span>
+    </span>
+    <button type="button" class="round big" id="next" data-t-label="next" aria-label="Next feeling"><span aria-hidden="true">▶</span></button>
+  </nav>
+</section>
+
+<p class="sr-only" id="announce" aria-live="polite"></p>
+</body>
+</html>

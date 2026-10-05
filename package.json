@@ -13,6 +13,7 @@
     "validate": "node tools/validate.mjs",
     "sheet": "node tools/contact-sheet.mjs",
     "preview": "node tools/serve.mjs",
+    "app": "node tools/serve.mjs",
     "sync:canvas": "node tools/sync-canvas.mjs",
     "sync:pull": "node tools/sync-canvas.mjs --pull",
     "all": "node tools/build-lottie.mjs && node tools/validate.mjs && node tools/contact-sheet.mjs"

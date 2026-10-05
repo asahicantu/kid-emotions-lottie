@@ -24,4 +24,7 @@ createServer((req, res) => {
   } catch {
     res.writeHead(404, { 'Content-Type': 'text/plain' }).end(`Not found: ${path}`);
   }
-}).listen(port, () => console.log(`Preview: http://localhost:${port}/preview/`));
+}).listen(port, () => {
+  console.log(`Preview: http://localhost:${port}/preview/`);
+  console.log(`Kids app: http://localhost:${port}/app/`);
+});
