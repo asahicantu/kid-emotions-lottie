@@ -33,7 +33,7 @@
     grid.innerHTML = '';
     KidRig.EMOTIONS.filter(function (e) { return FEELINGS[lang][e.id]; }).forEach(function (e) {
       var li = document.createElement('li');
-      li.innerHTML = '<a class="dash-tile" href="./#/' + e.id + '"><span class="dash-kid"></span><span class="label"></span></a>';
+      li.innerHTML = '<a class="dash-tile" href="./#/' + e.id + '"><span class="dash-kid-box"><span class="dash-kid"></span></span><span class="label"></span></a>';
       var a = li.firstChild;
       a.style.setProperty('--tile-bg', e.bg);
       a.style.setProperty('--tile-ring', e.ring);
@@ -41,7 +41,7 @@
       grid.appendChild(li);
       if (!window.lottie) return;
       var p = lottie.loadAnimation({
-        container: a.firstChild, renderer: 'svg', loop: true, autoplay: !still,
+        container: a.querySelector('.dash-kid'), renderer: 'svg', loop: true, autoplay: !still,
         path: LOTTIE_PATH.replace('{kid}', kid).replace('{id}', e.id)
       });
       if (still) p.addEventListener('DOMLoaded', function () { p.goToAndStop(e.poster, true); });

@@ -307,38 +307,91 @@ button { font: inherit; color: inherit; cursor: pointer; touch-action: manipulat
   .rec[aria-pressed="true"] .rec-icon { opacity: 1; }
 }
 
-/* ------------------------------------------------------------ dashboard (all.html) */
-.dash { max-width: 1600px; }
-.dash .controls a.round { text-decoration: none; }
-.dash-grid {
-  list-style: none; margin: 0; padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
-  gap: 22px 18px;
+/* ------------------------------------------------------------ dashboard (all.html)
+   The whole page is one screen: the grid takes the height under the header,
+   and the columns/rows follow the screen shape so all 20 tiles fit. */
+.dash {
+  max-width: none;
+  height: 100vh; height: 100dvh;
+  display: flex; flex-direction: column;
+  padding: clamp(8px, 1.6vh, 20px) clamp(10px, 2vw, 28px);
 }
+.dash .top { flex: none; align-items: center; margin-bottom: clamp(8px, 1.6vh, 20px); }
+.dash .intro h1 { font-size: clamp(1.7rem, min(5vh, 6vw), 3rem); }
+.dash .controls a.round { text-decoration: none; }
+.dash .switch button, .dash .round { min-height: 48px; }
+.dash .round { width: 48px; height: 48px; }
+
+.dash-grid {
+  --cols: 5; --rows: 4;
+  flex: 1; min-height: 0;
+  list-style: none; margin: 0; padding: 4px 4px 10px;
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  grid-template-rows: repeat(var(--rows), minmax(0, 1fr));
+  gap: clamp(8px, 1.8vmin, 22px);
+}
+@media (min-aspect-ratio: 3/2) { .dash-grid { --cols: 7; --rows: 3; } }
+@media (max-aspect-ratio: 1/1) { .dash-grid { --cols: 4; --rows: 5; } }
+@media (max-aspect-ratio: 3/5) { .dash-grid { --cols: 3; --rows: 7; } }
+/* Too small to fit everything legibly: let it scroll instead. */
+@media (max-height: 360px), (max-width: 330px) {
+  .dash { height: auto; }
+  .dash-grid { grid-template-rows: none; grid-auto-rows: 170px; }
+}
+
+.dash-grid li { display: flex; min-width: 0; min-height: 0; }
 .dash-tile {
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  padding: 14px 12px 12px;
+  flex: 1; min-width: 0; min-height: 0;
+  container-type: inline-size;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 6% 6% 5%;
   border: 3px solid var(--ink);
-  border-radius: var(--radius-sticker);
+  border-radius: clamp(16px, 12%, var(--radius-sticker));
   background: var(--tile-bg);
   box-shadow: var(--lift);
   color: inherit; text-decoration: none;
-  transition: transform 90ms ease, box-shadow 90ms ease;
+  rotate: var(--tilt, 0deg);
+  transition: transform 90ms ease, box-shadow 90ms ease, rotate 160ms ease;
 }
+.dash-tile:hover, .dash-tile:focus-visible { animation: wiggle 500ms ease-in-out; }
 .dash-tile:active { transform: translateY(4px); box-shadow: var(--lift-pressed); }
+.dash-grid li:nth-child(3n+1) .dash-tile { --tilt: -2deg; }
+.dash-grid li:nth-child(3n+2) .dash-tile { --tilt: 1.5deg; }
+.dash-grid li:nth-child(5n) .dash-tile   { --tilt: -1deg; }
+
+.dash-kid-box {
+  flex: 1 1 0; min-height: 0;
+  align-self: stretch;
+  container-type: size;
+  display: grid; place-items: center;
+}
 .dash-kid {
-  width: 100%; aspect-ratio: 1;
+  width: min(100cqw, 100cqh); aspect-ratio: 1;
   border-radius: 50%;
   border: 3px solid var(--ink);
   background: var(--tile-ring);
   overflow: hidden;
 }
+/* Name tag stuck over the bottom of the circle. */
 .dash-tile .label {
+  position: relative;
+  margin-top: -0.55em;
+  max-width: 100%;
+  padding: 0.05em 0.6em 0.1em;
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 3px 0 var(--ink);
   font-family: var(--display);
   font-weight: 800;
-  font-size: clamp(1.3rem, 2.2vw, 1.7rem);
-  line-height: 1.1;
-  text-align: center;
+  font-size: clamp(0.65rem, 11cqi, 1.8rem);
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+  rotate: calc(var(--tilt, 0deg) * -1.5);
+}
+@keyframes wiggle {
+  25% { rotate: -4deg; } 50% { rotate: 3deg; } 75% { rotate: -2deg; }
 }
 .see-all { text-decoration: none; color: inherit; }
