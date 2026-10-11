@@ -306,3 +306,39 @@ button { font: inherit; color: inherit; cursor: pointer; touch-action: manipulat
 @media (prefers-reduced-motion: reduce) {
   .rec[aria-pressed="true"] .rec-icon { opacity: 1; }
 }
+
+/* ------------------------------------------------------------ dashboard (all.html) */
+.dash { max-width: 1600px; }
+.dash .controls a.round { text-decoration: none; }
+.dash-grid {
+  list-style: none; margin: 0; padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+  gap: 22px 18px;
+}
+.dash-tile {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 14px 12px 12px;
+  border: 3px solid var(--ink);
+  border-radius: var(--radius-sticker);
+  background: var(--tile-bg);
+  box-shadow: var(--lift);
+  color: inherit; text-decoration: none;
+  transition: transform 90ms ease, box-shadow 90ms ease;
+}
+.dash-tile:active { transform: translateY(4px); box-shadow: var(--lift-pressed); }
+.dash-kid {
+  width: 100%; aspect-ratio: 1;
+  border-radius: 50%;
+  border: 3px solid var(--ink);
+  background: var(--tile-ring);
+  overflow: hidden;
+}
+.dash-tile .label {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+  line-height: 1.1;
+  text-align: center;
+}
+.see-all { text-decoration: none; color: inherit; }

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Feelings Friends: all feelings</title>
+<meta name="theme-color" content="#CFE6FB">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>😄</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Baloo+2:wght@600;800&display=swap">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js" defer></script>
+<script src="../src/rig/rig.js" defer></script>
+<script src="feelings.js" defer></script>
+<script src="all.js" defer></script>
+</head>
+<body>
+
+<main class="home dash">
+  <header class="top">
+    <div class="intro">
+      <h1 data-t="back">All feelings</h1>
+    </div>
+    <div class="controls">
+      <a class="round" href="./" data-t-label="home" aria-label="Home"><span aria-hidden="true">🏠</span></a>
+      <div class="switch kid-switch" role="radiogroup" data-t-label="friend" aria-label="Choose a friend">
+        <button type="button" role="radio" data-kid="girl" aria-checked="true"><span aria-hidden="true">👧</span> <span data-t="girl">Girl</span></button>
+        <button type="button" role="radio" data-kid="boy" aria-checked="false"><span aria-hidden="true">👦</span> <span data-t="boy">Boy</span></button>
+      </div>
+    </div>
+  </header>
+
+  <ul class="dash-grid" id="grid"></ul>
+</main>
+
+</body>
+</html>

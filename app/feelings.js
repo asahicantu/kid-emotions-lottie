@@ -29,7 +29,7 @@ var UI = {
   en: {
     title: 'How do you feel today?', hint: 'Tap a feeling to meet it.',
     friend: 'Choose a friend', girl: 'Girl', boy: 'Boy', language: 'Language',
-    soundOn: 'Sound on', soundOff: 'Sound off', surprise: 'Surprise me',
+    soundOn: 'Sound on', soundOff: 'Sound off', surprise: 'Surprise me', seeAll: 'See them all', home: 'Home',
     back: 'All feelings', again: 'Say it again', read: 'Read to me', tryIt: 'Try it:',
     prev: 'Previous feeling', next: 'Next feeling', kidFeeling: 'A kid feeling {x}',
     record: 'Record my voice', stop: 'Stop', remove: 'Delete my voice', hasVoice: 'Has your voice',
@@ -41,7 +41,7 @@ var UI = {
   es: {
     title: '¿Cómo te sientes hoy?', hint: 'Toca un sentimiento para conocerlo.',
     friend: 'Elige un amigo', girl: 'Niña', boy: 'Niño', language: 'Idioma',
-    soundOn: 'Sonido activado', soundOff: 'Sonido apagado', surprise: 'Sorpréndeme',
+    soundOn: 'Sonido activado', soundOff: 'Sonido apagado', surprise: 'Sorpréndeme', seeAll: 'Verlos todos', home: 'Inicio',
     back: 'Todos los sentimientos', again: 'Dilo otra vez', read: 'Léemelo', tryIt: 'Pruébalo:',
     prev: 'Sentimiento anterior', next: 'Sentimiento siguiente', kidFeeling: 'Sentimiento: {x}',
     record: 'Grabar mi voz', stop: 'Parar', remove: 'Borrar mi voz', hasVoice: 'Tiene tu voz',
@@ -53,7 +53,7 @@ var UI = {
   nb: {
     title: 'Hvordan har du det i dag?', hint: 'Trykk på en følelse for å bli kjent med den.',
     friend: 'Velg en venn', girl: 'Jente', boy: 'Gutt', language: 'Språk',
-    soundOn: 'Lyd på', soundOff: 'Lyd av', surprise: 'Overrask meg',
+    soundOn: 'Lyd på', soundOff: 'Lyd av', surprise: 'Overrask meg', seeAll: 'Se alle', home: 'Hjem',
     back: 'Alle følelser', again: 'Si det igjen', read: 'Les for meg', tryIt: 'Prøv selv:',
     prev: 'Forrige følelse', next: 'Neste følelse', kidFeeling: 'Følelse: {x}',
     record: 'Ta opp stemmen min', stop: 'Stopp', remove: 'Slett stemmen min', hasVoice: 'Har stemmen din',
