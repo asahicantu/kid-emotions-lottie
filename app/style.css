@@ -162,17 +162,25 @@ button { font: inherit; color: inherit; cursor: pointer; touch-action: manipulat
 .stage[hidden] { display: none; }
 .stage-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 
+/* Kid on top, words underneath. The kid-box takes whatever height the words
+   and bars leave over, and the kid is the biggest square that fits in it. */
 .stage-body {
-  display: flex; align-items: center; justify-content: center;
-  gap: clamp(16px, 4vw, 56px);
+  display: flex; flex-direction: column; align-items: center;
+  gap: clamp(8px, 2vh, 20px);
   padding: 12px 0;
-  min-height: 0;
+  text-align: center;
+}
+.kid-box {
+  flex: 1 1 0;
+  align-self: stretch;
+  min-height: min(70vw, 45vh);
+  container-type: size;
+  display: grid; place-items: center;
 }
 .kid-wrap {
   position: relative;
-  width: min(80vw, 52vh, 440px);
+  width: min(100cqw, 100cqh);
   aspect-ratio: 1;
-  flex: none;
 }
 .halo {
   position: absolute; inset: 4%;
@@ -208,11 +216,11 @@ button { font: inherit; color: inherit; cursor: pointer; touch-action: manipulat
   font-size: 1rem; text-align: center;
 }
 
-.words { max-width: 30ch; }
+.words { flex: none; width: 100%; max-width: 46ch; }
 .feel-name {
   font-family: var(--display);
   font-weight: 800;
-  font-size: clamp(3rem, 11vw, 6rem);
+  font-size: clamp(2.5rem, min(9vw, 8vh), 5rem);
   line-height: 0.95;
   margin: 0 0 12px;
   letter-spacing: -0.01em;
@@ -243,9 +251,6 @@ button { font: inherit; color: inherit; cursor: pointer; touch-action: manipulat
 }
 
 @media (max-width: 760px) {
-  .stage-body { flex-direction: column; text-align: center; gap: 8px; }
-  .words { max-width: 34ch; }
-  .kid-wrap { width: min(78vw, 42vh, 360px); }
   .stage-nav .pill { padding: 0 16px; }
   .stage-nav { display: grid; grid-template-columns: auto 1fr auto; }
   #again { justify-content: center; }

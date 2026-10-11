@@ -40,7 +40,7 @@ This starts a local server. Open **http://localhost:5173/preview/** to compare t
 
 ## Feelings Friends (kids app)
 
-`app/` is a single-page web app for children, built on the files in `dist/`. Run `npm run app` and open **http://localhost:5173/app/**.
+`app/` is a single-page web app for children, built on the files in `dist/`. Run `npm run app` and open **http://localhost:5173/app/**. Live version: **https://asahicantu.github.io/kid-emotions-lottie/app/** (GitHub Pages, served from `main` at the repo root).
 
 - The home screen shows all 20 feelings as big stickers, each with its emoji, name and colour. The colours are the `ring` and `bg` values from `rig.js`.
 - Tap a sticker and the screen fills with that feeling's colour. The kid acts out the feeling (the per-emotion Lottie file), a voice says the feeling's name, then a cartoon sound plays: a giggle for happy, a sad trombone for sad, a growl for angry, a slide whistle for surprised…
